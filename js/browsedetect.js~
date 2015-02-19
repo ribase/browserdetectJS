@@ -1,0 +1,66 @@
+(function( $ ) {
+	$.fn.browsedetect = function(options) {
+		
+		var settings = $.extend({
+		    // These are the defaults.
+		    opera: false,
+		    firefox: false,
+		    safari: false,
+		    chrome: false,
+		    ie9: true,
+		    ie10: false,
+		    ie11: false
+		 }, options );
+		
+		
+		var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+		var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
+		var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;	 
+		var isChrome = !!window.chrome && !isOpera;
+		var isIE9orLower = $.browser.msie && parseFloat($.browser.version)&lt;9;
+		var isIE10 = $.browser.msie && $.browser.version == 10;
+		var isIE11 = !!navigator.userAgent.match(/Trident.*rv\:11\./);
+		
+		var textEN = "We recognized that you visit our website with a non-supported Browser. To experience the website in its full extent, please upgrade to a newer browser.";
+		var textDE = "Wir haben festgestellt, dass Sie uns mit einem nicht unterstützen Browser besuchen. Um die Website in vollem Umfang darstellen zu lassen, verwenden Sie bitte einen anderen Browser.";
+		var textFR = "Nous avons remarqué que vous visitiez notre site Web avec un navigateur non pris en charge. Pour découvrir le site dans toute son étendue, veuillez s'il vous plaît passer à un navigateur plus récent.";
+		
+		
+		//create the banner
+		$.createBanner = function(){
+			if($('html').attr('lang') === 'de_DE'){
+				$('body').append('<div class="broserdetect">'+textDE+'</div>');
+			}	
+			else if($('html').attr('lang') === 'fr_FR'){
+				$('body').append('<div class="broserdetect">'+textFR+'</div>');
+			}
+			else if($('html').attr('lang') === 'en_US'){
+				$('body').append('<div class="broserdetect">'+textEN+'</div>');
+			}else {
+				$('body').append('<div class="broserdetect">'+textEN+'</div>');
+			}	
+		};
+		
+		if(settings.opera && isOpera) {
+			$.createBanner();
+		}else if(settings.firefox && isFirefox){
+			$.createBanner();		
+		}else if(settings.safari && isSafari){   
+			$.createBanner();		
+		}else if(settings.chrome && isChrome){   
+			$.createBanner();		
+		}else if(settings.ie9 && isIE9orLower){  
+			$.createBanner();		
+		}else if(settings.ie10 && isIE10){     
+			$.createBanner();		
+		}else if(settings.ie11 && isIE11){    
+			$.createBanner();
+		} 
+		
+	};
+}( jQuery ));
+
+$( document ).ready(function() {
+	$.browsedetect();	
+		
+});
